@@ -37,7 +37,7 @@ app.use('/admin' ,adminRoute);
 
 // Start the server
 app.listen(9761, () => {
-  console.log('Server is running on http://127.0.0.1:6235');
+  console.log('Server is running on http://127.0.0.1:9761');
 });
 
 
