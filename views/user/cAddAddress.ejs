@@ -1,0 +1,88 @@
+
+<%- include("../user/layouts/userheader") %>
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Address Management</h4>
+                        <div class="breadcrumb__links">
+                            <a href="./index.html">Home</a>
+                            <a href="./shop.html">Shop</a>
+                            <span>Address Management</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="checkout__form">
+                <form action="/cAddAddress" method="post">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-6">
+                            
+                            <h6 class="checkout__title">ADD ADDRESS</h6>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Fist Name<span>*</span></p>
+                                        <input type="text" id="fname" name="fname" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Last Name<span>*</span></p>
+                                        <input type="text" id="lname" name="lname" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Address<span>*</span></p>
+                                <input type="text" id="address" name="address" required>
+                            </div>
+                            <div class="checkout__input">
+                                <p>City<span>*</span></p>
+                                <input type="text" id="city" name="city" required>
+                                
+                            </div>
+                            
+                            <div class="checkout__input">
+                                <p>Pincode<span>*</span></p>
+                                <input type="number" id="pin" name="pin" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Phone<span>*</span></p>
+                                        <input type="text" id="phone" name="phone" required>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                           
+                            
+                            
+                           
+                        </div>
+                       
+                    </div>
+                    <input type="hidden" value="<%= total%>" name="total" id="total">
+                    <button class="btn btn-dark">SUBMIT</button>
+                </form>
+            </div>
+
+            
+
+        </div>
+    </section>
+    <!-- Checkout Section End -->
+
+    <!-- Footer Section Begin -->
+    <%- include("../user/layouts/userfooter") %>

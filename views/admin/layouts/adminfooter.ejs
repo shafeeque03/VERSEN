@@ -1,0 +1,177 @@
+
+
+<script src="/adminAssets/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="/adminAssets/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="/adminAssets/js/vendors/select2.min.js"></script>
+        <script src="/adminAssets/js/vendors/perfect-scrollbar.js"></script>
+        <script src="/adminAssets/js/vendors/jquery.fullscreen.min.js"></script>
+        <script src="/adminAssets/js/vendors/chart.js"></script>
+        <!-- Main Script -->
+        <script src="/adminAssets/js/main.js?v=1.1" type="text/javascript"></script>
+        <script src="/adminAssets/js/custom-chart.js" type="text/javascript"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+        <script>
+
+          
+
+          function changeDeliver(id, user) {
+            event.preventDefault()
+            $.ajax({
+              url: '/admin/deliver',
+              method: 'post',
+              data:{
+                id
+              },
+              success:(response)=>{
+                if(response.success){
+                  $("#reloadDiv").load(`/admin/userOrders?id=${user}  #reloadDiv` )
+                }
+              }
+            })
+
+          }
+
+        </script>
+
+        <!-- Include the jsPDF library -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+
+<script>
+  function convertToPDF(data) {
+    const headers = Array.from(data.querySelectorAll('#tablehead th')).map(th => th.textContent);
+    const rows = Array.from(data.querySelectorAll('tbody tr')).map(row => {
+      return Array.from(row.querySelectorAll('td')).map(td => td.textContent);
+    });
+    return [headers, ...rows];
+  }
+
+  function generatePDF() {
+    const tableData = convertToPDF(document.getElementById("tableReport"));
+    const filename = "sales_report.pdf";
+
+    const pdfFormat = {
+      content: [
+        {
+          text: 'SALES REPORT',
+          style: 'header'
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths: headers.map(header => 'auto'), // Adjust the column widths as needed
+            body: tableData
+          },
+          layout: 'lightHorizontalLines' // Add light horizontal lines to the table
+        }
+      ],
+      styles: {
+        header: {
+          fontSize: 20,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 0, 0, 10]
+        }
+      }
+    };
+
+    pdfMake.createPdf(pdfFormat).download(filename);
+  }
+</script>
+
+
+        <script>
+          const selectedDates = async () => {
+            try {
+              const startDate = document.getElementById('startDatePicker').value;
+              const endDate = document.getElementById('endDatePicker').value;
+              const response = await axios.post('/admin/salesReport', { startDate, endDate });
+              const salesReport = response.data.selectedDate;
+              const reportTable = document.getElementById('tableReport');
+              const head = document.getElementById('tablehead');
+              const message = ""
+              let count = 1;
+              const tableData = salesReport
+                .map((data) => `
+                  <tr>
+                    <td>${count++}</td>
+                    <td><b>${data.orderID}</b></td>
+                    <td><b>${data.productName}</b></td>
+                    <td>${data.productPrice}</td>
+                    <td>${data.productQuantity}</td>
+                    <td>${data.paymentMethod}</td>
+                    <td>${data.total}</td>
+                    <td>${data.date}</td>
+                    <td>${data.status}</td>
+                  </tr>
+                `)
+                .join('');
+              reportTable.querySelector('tbody').innerHTML = tableData;
+            } catch (error) {
+              console.log(error.message);
+            }
+          };
+        </script>
+
+
+<script>
+  function generatePDF() {
+    const orders = document.querySelectorAll('.table tbody tr');
+
+    const orderRows = [];
+    orders.forEach(order => {
+      const orderId = order.cells[0].innerText;
+      const user = order.cells[1].innerText;
+      const Date = order.cells[2].innerText;
+      const Total = order.cells[3].innerText;
+      const Status = order.cells[4].innerText;
+      const PayMethod = order.cells[5].innerText;
+
+      orderRows.push([orderId, user, Date, Total, Status, PayMethod]);
+    });
+
+    const pdfFormat = {
+      content: [
+        {
+          text: 'SALES REPORT',
+          style: 'header'
+        },
+        {
+          table: {
+            headerRows: 1,
+            widths:[80, 100, 80, 60, 70, 90],
+            body: [
+              [{ text: 'No', fillColor: '#1B998B' }, // Adding background color to header cells
+          { text: 'ID', fillColor: '#1B998B' },
+          { text: 'Product', fillColor: '#1B998B' },
+          { text: 'Price', fillColor: '#1B998B' },
+          { text: 'Quantity', fillColor: '#1B998B' },
+          { text: 'Payment Method', fillColor: '#1B998B' }],
+              ...orderRows
+            ]
+          },
+          layout: 'lightHorizontalLines' // Add light horizontal lines to the table
+        }
+      ],
+      styles: {
+        header: {
+          fontSize: 20,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 0, 0, 10]
+        }
+      }
+    };
+
+    pdfMake.createPdf(pdfFormat).print();
+  }
+  </script>
+
+
+    </body>
+</html>

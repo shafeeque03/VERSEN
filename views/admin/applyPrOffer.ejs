@@ -1,0 +1,49 @@
+<%- include("../admin/layouts/adminheader") %>
+
+
+<h4 class="mt-3 ms-3"><%= product.name %></h4>
+<div class="mt-3 ms-3"> <img src="/adminAssets/productImages/<%= product.image[0] %>" alt="" style="width: 150px; border: 1px solid rgb(211, 210, 210); padding: 10px; background: rgb(227, 227, 227);"> </div>
+
+<div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Offer Name</th>
+            <th>Start Date</th>
+            <th>Expiry Date</th>
+            <th>Discount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+
+            <% const options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
+            <% var now = Date.now() %>
+
+            <% if(offers){ 
+                for(let i=0; i< offers.length;i++){%>
+
+          <tr>
+            <td><h6 class="mb-0 title"><%= offers[i].name %></h6></td>
+            <td><%=offers[i].startingDate.toLocaleDateString('en-US', options)%></td>
+            <td><%=offers[i].expiryDate.toLocaleDateString('en-US', options)%></td>
+            <td><%= offers[i].percentage %>%</td>
+            <% if( offers[i].startingDate < now && offers[i].expiryDate > now && offers[i].status ){%>
+            <td><a href="/admin/setProductOffer?id=<%=product._id%>&&off=<%= offers[i]._id %>"><span class="badge badge-pill badge-soft-primary">Apply</span></a></td>
+            <% }else{ %>
+            <td><span class="badge badge-pill badge-soft-danger">Can't apply</span></td>
+
+                <% } %>
+          </tr>
+
+          <%}}%>
+         
+        </tbody>
+      </table>
+      <!-- table-responsive.// -->
+    </div>
+  </div>
+
+
+<%- include("../admin/layouts/adminfooter") %>

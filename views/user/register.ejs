@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Registration</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="" />
+        <meta property="og:type" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="/adminAssets/imgs/v-logo.png" />
+        <!-- Template CSS -->
+        <link href="adminAssets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+        <style>
+            .error-text {
+                color: red;
+                font-size: 12px;
+                margin-top: 5px;
+            }
+        </style>
+        <script>
+            function validateForm() {
+                // Get form input values
+                var name = document.getElementById("name").value;
+                var email = document.getElementById("email").value;
+                var phone = document.getElementById("phone").value;
+                var password = document.getElementById("password").value;
+                var rePassword = document.getElementById("rePassword").value;
+
+                // Clear previous error messages
+                document.getElementById("nameError").innerText = "";
+                document.getElementById("emailError").innerText = "";
+                document.getElementById("phoneError").innerText = "";
+                document.getElementById("passwordError").innerText = "";
+
+                // Regular expression for email validation
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                // Flag to track if there are any errors
+                var hasErrors = false;
+
+                // Validate name
+                if (name.trim() === "") {
+                    document.getElementById("nameError").innerText = "Name is required.";
+                    hasErrors = true;
+                }
+
+                // Validate email
+                if (email.trim() === "") {
+                    document.getElementById("emailError").innerText = "Email is required.";
+                    hasErrors = true;
+                } else if (!emailRegex.test(email)) {
+                    document.getElementById("emailError").innerText = "Invalid email format.";
+                    hasErrors = true;
+                }
+
+                // Validate phone
+                if (phone.trim() === "") {
+                    document.getElementById("phoneError").innerText = "Phone number is required.";
+                    hasErrors = true;
+                }
+
+                // Validate phone
+                if (phone.length<10) {
+                    document.getElementById("phoneError").innerText = "Enter 10 digit";
+                    hasErrors = true;
+                }
+
+                // Validate password
+                if (password.trim() === "") {
+                    document.getElementById("passwordError").innerText = "Password is required.";
+                    hasErrors = true;
+                }
+
+                if (password !==rePassword) {
+                    document.getElementById("rePasswordError").innerText = "password not match";
+                    hasErrors = true;
+                }
+
+               
+                // Prevent form submission if there are errors
+                if (hasErrors) {
+                    return false;
+                }
+
+                // Form is valid, submit the form
+                return true;
+            }
+        </script>
+    </head>
+
+    <body>
+        <main>
+            <header class="main-header style-2 navbar">
+                <div class="col-brand">
+                    <h1 style="color: black;"><b>VERSEN</b></h1>
+                </div>
+                
+            </header>
+            <section class="content-main mt-80 mb-80">
+                <div class="card mx-auto card-login">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Create an Account</h4>
+                        <form onsubmit="return validateForm()" action="/register" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Name</label>
+                                <input class="form-control" placeholder="Your name" id="name" name="name" type="text" required />
+                                <div id="nameError" class="error-text"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input class="form-control" placeholder="Your email"  id="email" name="email" type="text" required />
+                                <div id="emailError" class="error-text"></div>
+                            </div>
+                            <!-- form-group// -->
+                            <div class="mb-3">
+                                <label class="form-label">Phone</label>
+                                <input class="form-control" placeholder="Your number" id="phone" name="phone" type="text" required />
+                                <div id="phoneError" class="error-text"></div>
+                            </div>
+                            <!-- form-group// -->
+                            <div class="mb-3">
+                                <label class="form-label">Create password</label>
+                                <input class="form-control" placeholder="Password" id="password" name="password" type="password" required />
+                                <div id="passwordError" class="error-text"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Re-password</label>
+                                <input class="form-control" placeholder="Password" id="rePassword" name="rePassword" type="password" required />
+                                <div id="rePasswordError" class="error-text"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Refer Code</label>
+                                <input class="form-control" placeholder="Refer Code (optional)" id="refer" name="refer" type="text"/>
+                                
+                            </div>
+                           
+                            <!-- form-group// -->
+                           
+                            <!-- form-group  .// -->
+                            <div class="mb-4">
+                                <button type="submit" class="btn btn-primary w-100">Login</button>
+                            </div>
+                            <!-- form-group// -->
+<% if(typeof message!=='undefined') {  %>
+      <p class="text-danger">
+        <%= message %>
+      </p>
+      <% } %>
+                        </form>
+
+                        
+                        <p class="text-center mb-2">Already have an account? <a href="/login">Sign in now</a></p>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+        <script src="adminAssets/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="adminAssets/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="adminAssetsjs/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="adminAssets/js/main.js?v=1.1" type="text/javascript"></script>
+    </body>
+</html>

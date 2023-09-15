@@ -1,0 +1,102 @@
+<%- include("../admin/layouts/adminheader") %>
+
+<section class="content-main">
+  <div class="content-header">
+    <h2 class="content-title">Users list</h2>
+  </div>
+  <div class="card mb-4">
+    <header class="card-header">
+      <div class="row gx-3">
+        <div class="col-lg-4 col-md-6 me-auto">
+          <form class="d-flex">
+          <input type="text" placeholder="Search..." class="form-control i" id="search" name="search"/>
+          <button class="btn btn-primary ms-2" type="submit">Search</button>
+        </form>
+        </div>
+      </div>
+    </header>
+    <!-- card-header end// -->
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Orders</th>
+              <th>Email</th>
+              <th>phone</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (users && users.length > 0) { for (let i = 0; i <
+            users.length; i++) { %>
+            <tr>
+              <td width="40%">
+                <a href="#" class="itemside">
+                  <div class="left">
+                    <img
+                      src="/adminAssets/imgs/theme/user.png"
+                      class="img-sm img-avatar"
+                      alt="Userpic"
+                    />
+                  </div>
+                  <div class="info pl-3">
+                    <h6 class="mb-0 title"><%= users[i].name %></h6>
+                  </div>
+                </a>
+              </td>
+              <td><a href="/admin/userOrders?id=<%= users[i]._id %>">Orders</a></td>
+              <td><%= users[i].email %></td>
+              <td><%= users[i].phone %></td>
+              <td>
+                <% if (users[i].is_blocked == 0) { %>
+                <a href="/admin/block-user?id=<%= users[i]._id %>"
+                  ><button class="btn btn-primary">UNBLOCKED</button></a>
+                
+                <% } else { %>
+                <a href="/admin/unblock-user?id=<%= users[i]._id %>"
+                  ><button class="btn btn-google">BLOCKED</button></a>
+                
+                <% } %>
+              </td>
+            </tr>
+            <% } } else { %>
+            <tr>
+              <td colspan="5">Users Not Found</td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+        <!-- table-responsive.// -->
+      </div>
+    </div>
+    <!-- card-body end// -->
+  </div>
+  <!-- card end// -->
+  <div class="text-center pagination">
+    <% const pagesToShow = 3; // Number of page links to show at a time %>
+    <% const startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2)); %>
+    <% const endPage = Math.min(totalPages, startPage + pagesToShow - 1); %>
+
+    <% if (startPage > 1) { %>
+        <a class="pagination-link" href="?page=1">1</a>
+        <% if (startPage > 2) { %>
+            <span class="pagination-dots">...</span>
+        <% } %>
+    <% } %>
+
+    <% for (let i = startPage; i <= endPage; i++) { %>
+        <a class="pagination-link <%= i === currentPage ? 'active' : '' %>" href="?page=<%= i %>"><%= i %></a>
+    <% } %>
+
+    <% if (endPage < totalPages) { %>
+        <% if (endPage < totalPages - 1) { %>
+            <span class="pagination-dots">...</span>
+        <% } %>
+        <a class="pagination-link" href="?page=<%= totalPages %>"><%= totalPages %></a>
+    <% } %>
+</div>
+
+</section>
+<%- include("../admin/layouts/adminfooter") %>

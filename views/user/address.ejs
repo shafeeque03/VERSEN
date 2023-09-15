@@ -1,0 +1,45 @@
+<%- include("../user/layouts/userheader") %>
+
+<section class="breadcrumb-option">
+    <!-- ... Breadcrumb code ... -->
+</section>
+
+<div class="container mt-5 mb-5">
+    <a href="/addAddress">
+        <button class="btn btn-black">Add Address</button>
+    </a>
+</div>
+
+<% if (address && address.addresses && address.addresses.length > 0) { %>
+    <div class="container mt-5 mb-5">
+        <% for (let i = 0; i < address.addresses.length; i++) { %>
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="card">
+                        <div class="card-header btn-black">
+                            Address-<%= i + 1 %>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>First Name:</strong> <%= address.addresses[i].fname %></p>
+                            <p><strong>Last Name:</strong> <%= address.addresses[i].lname %></p>
+                            <p><strong>Address:</strong> <%= address.addresses[i].address %></p>
+                            <p><strong>City/Town:</strong> <%= address.addresses[i].city %></p>
+                            <p><strong>Pincode:</strong> <%= address.addresses[i].pin %></p>
+                            <p><strong>Phone Number:</strong> <%= address.addresses[i].phone %></p>
+                        </div>
+                        <div class="card-header btn-black d-flex justify-content-between ">
+                            <a href="/deleteAddress?id=<%= address.addresses[i]._id %>"><span class="btn-black">Delete</span></a>
+                            <a href="/editAddress?id=<%= address.addresses[i]._id %>"><span class="btn-black">Edit</span></a>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+<% } else { %>
+    <h4 class="text-center">No Address Available</h4>
+<% } %>
+
+<%- include("../user/layouts/userfooter") %>

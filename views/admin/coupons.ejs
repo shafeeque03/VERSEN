@@ -1,0 +1,75 @@
+<%- include("../admin/layouts/adminheader") %>
+<style>
+
+.black{
+    color: black;
+}
+
+</style>
+
+<div class="content-header ms-3 mt-3">
+   
+    <div>
+        <a href="/admin/addCoupon" class="btn btn-primary btn-sm rounded">Add New Coupon</a>
+    </div>
+   
+</div>
+
+
+<article class="itemlist">
+    <div class="row align-items-center ms-5 mt-4">
+        
+        <h3 class="mb-3">All Coupons</h3>
+        
+        
+        
+        <div class="col-lg-2 col-sm-2 col-4 col-price black">Coupon</div>
+        <div class="col-lg-2 col-sm-2 col-4 col-price black">Starting Date</div>
+        <div class="col-lg-2 col-sm-2 col-4 col-price black">Expery Date</div>
+        <div class="col-lg-2 col-sm-2 col-4 col-status black">
+            <span>Offer</span>
+        </div>
+        <div class="col-lg-1 col-sm-2 col-4 col-date black">
+            <span>Status</span>
+        </div>
+    </div>
+    <!-- row .// -->
+</article>
+
+<br>
+<% const options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
+<% var now = Date.now() %>
+
+<% if(coupons){ 
+
+    for(let i=0;i<coupons.length;i++){
+
+%>
+
+<% if( coupons[i].startDate < now && coupons[i].expireDate > now ) { var active = "Active" } else if(coupons[i].startDate > now  ) { var active = "Upcoming" } else if (coupons[i].expireDate < now ) { var active = "Expired" } %>
+
+
+
+<article class="itemlist">
+    <div class="row align-items-center ms-5">
+        
+        <div class="col-lg-2 col-sm-2 col-4 col-price"><%= coupons[i].code %></div>
+        <div class="col-lg-2 col-sm-2 col-4 col-price"><%=coupons[i].startDate.toLocaleDateString('en-US', options)%></div>
+        <div class="col-lg-2 col-sm-2 col-4 col-price"><%=coupons[i].expireDate.toLocaleDateString('en-US', options)%></div>
+        <div class="col-lg-2 col-sm-2 col-4 col-status">
+            <span><%= coupons[i].discountPercentage %>%</span>
+        </div>
+        <div class="col-lg-1 col-sm-2 col-4 col-date">
+            <span><%= active %></span>
+
+        </div>
+    </div>
+</article>
+<br>
+<% }} %>
+
+
+
+
+
+<%- include("../admin/layouts/adminfooter") %>

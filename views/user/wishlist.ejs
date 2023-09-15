@@ -1,0 +1,76 @@
+<%- include("../user/layouts/userheader") %>
+    <!-- Header Section End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Wishlist</h4>
+                        <div class="breadcrumb__links">
+                            <a href="./index.html">Home</a>
+                            <span>Wishlist</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Shopping Cart Section Begin -->
+    <section class="shopping-cart spad">
+        <div class="container">
+            <div class="row" >
+                <div class="col-lg-12 mb-3 mt3">
+                    <% if (wish && wish.products) { %>
+                    <div class="shopping__cart__table" >
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% wish.products.forEach((wish)=> { %>
+                                <tr>
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__pic">
+                                            <img src="/adminassets/productImages/<%= wish.productId.image[0] %>" alt="" style="height: 100px; width: 100px;">
+                                        </div>
+                                        <div class="product__cart__item__text">
+                                            <h6><%= wish.productId.name %></h6>
+                                            <h5>₹<%= wish.productId.price %>
+                                            </h5>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price"><a href="/addToCart?id=<%= wish.productId._id %>"><span style="color: black;">Add to Cart</span></a></td>
+                                    <td class="cart__close"><a href="/deleteWishlist?id=<%= wish.productId._id %>"><i class="fa fa-close"></i></a></td>
+                                </tr>
+
+                                <% }) %>
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                   
+                </div>
+
+                <% } else { %>
+                    <h4 class="text-center mb-5">No products in Wishlist</h4>
+                    <div class="continue__btn">
+                        <a href="/shop">Continue Shopping</a>
+                    </div>
+                    <% } %>
+                
+            </div>
+        </div>
+    </section>
+    <!-- Shopping Cart Section End -->
+
+    <!-- Footer Section Begin -->
+
+    <%- include("../user/layouts/userfooter") %>
+    

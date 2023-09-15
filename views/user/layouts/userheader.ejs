@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>VERSEN FOR MEN</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="/userAssets/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/userAssets/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/userAssets/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/userAssets/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/userAssets/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/userAssets/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/userAssets/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/userAssets/css/style.css" type="text/css">
+    <link rel="icon" href="/adminAssets/imgs/v-logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="path-to-sweetalert2-css/sweetalert2.min.css">
+
+    
+    <style>
+        .product__details__pic__item img {
+            transition: transform 0.3s ease-in-out;
+        }
+    
+        .product__details__pic__item:hover img {
+            transform: scale(1.4);
+        }
+        .btn-black{
+            color: white;
+            background-color: black;
+        }
+
+        .pagination {
+    margin-top: 20px;
+}
+
+.pagination-link {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 2px;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination-link:hover {
+    background-color: #959595;
+}
+
+.pagination-link.active {
+    background-color: #000000;
+    color: #ffffff;
+}  
+.qty-btn {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+} 
+.form-control,.form-select {
+    background-color: #f4f5f9;
+    border: 2px solid #f4f5f9;
+    font-size: 13px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding-left: 20px;
+    color: #4f5d77;
+    width: 100%;
+    border-radius: 4px;
+	height: 41px;
+    &:focus {
+        background: transparent;
+        border-color: #f4f5f9;
+        box-shadow: none;
+    }
+	&.select-multiple {
+		height: unset;
+		border-radius: 4px;
+	}
+}
+.btn {	
+	display: inline-flex;
+	align-items: center;
+	align-content: center;
+	&.btn-primary {
+		font-size: 14px;
+		font-weight: 500;
+		padding: 10px 40px;
+		color: #ffffff;
+		border: none;
+		background-color: #000000;
+		border-radius: 4px;
+		i {
+			color: #fff !important;
+			margin-right: 5px;
+			margin-top: -4px;
+		}
+		&:hover {
+			background-color: #1b1b1b;
+		}
+	}
+}
+    </style>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__option">
+            <div class="offcanvas__links">
+                <a href="#">Sign in</a>
+            </div>
+            
+        </div>
+        <div class="offcanvas__nav__option">
+            <a href="#" class="search-switch"><img src="/userAssets/img/icon/search.png" alt=""></a>
+            <a href="#"><img src="/userAssets/img/icon/heart.png" alt=""></a>
+            <a href="#"><img src="/userAssets/img/icon/cart.png" alt=""> <span>0</span></a>
+            <div class="price">$0.00</div>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__text">
+            <p>Free shipping, 10-day return or refund guarantee.</p>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo text-center">
+                        <!-- <a href="./index.html"><img src="/userAssets/img/logo.png" alt=""></a> -->
+                        <h2><b>VERSEN</b></h2>
+                        <p><b>FOR MEN</b></p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 mt-3">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/shop">Shop</a></li>
+                            
+                            <li><a href="/about">About Us</a></li>
+                            <li><a href="/contact">Contacts</a></li>
+                            <li><a href="/account">Account</a>
+                            
+                            </li>
+                            
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3 mt-3">
+                    <div class="header__nav__option">
+                        <a href="/wishlist"><img src="/userAssets/img/icon/heart.png" alt=""></a>
+                        <a href="/cart"><img src="/userAssets/img/icon/cart.png" alt=""> <span></span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+    </header>

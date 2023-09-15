@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Forgot Password</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="" />
+        <meta property="og:type" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="/adminAssets/imgs/v-logo.png" />
+        <!-- Template CSS -->
+        <link href="adminAssets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+        <main>
+            <header class="main-header style-2 navbar">
+                <div class="col-brand">
+                    <a href="index.html" class="brand-wrap">
+                        <h1 style="color: black;"><b>VERSEN</b></h1>
+                    </a>
+                </div>
+            </header>
+            <section class="content-main mt-80 mb-80">
+                <div class="card mx-auto card-login">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Forgot Password</h4>
+                        <form method="post" action="/forgotPass">
+                            <div class="mb-3">
+                                <input class="form-control" placeholder="Enter email" type="email" id="email" name="email" />
+                            </div>
+                            <!-- form-group// -->
+                           
+                            <!-- form-group form-check .// -->
+                            <div class="mb-4">
+                                <button type="submit" class="btn btn-primary w-100">Enter</button>
+                            </div>
+                            <!-- form-group// -->
+                        </form>
+                        <% if(typeof message!=='undefined') {  %>
+                            <p class="text-danger">
+                              <%= message %>
+                            </p>
+                            <% } %>
+                        </div>
+                       
+                       
+                       
+                </div>
+            </section>
+           
+           
+        </main>
+        <script src="adminAssets/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="adminAssets/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="adminAssets/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="adminAssets/js/main.js?v=1.1" type="text/javascript"></script>
+    </body>
+</html>

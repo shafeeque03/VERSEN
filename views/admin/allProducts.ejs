@@ -1,0 +1,156 @@
+<%- include("../admin/layouts/adminheader") %>
+
+<section class="content-main">
+  <div class="content-header">
+      <div>
+          <h2 class="content-title card-title">Products List</h2>
+      </div>
+      <div>
+          <a href="/admin/addProduct" class="btn btn-primary btn-sm rounded">Add new product</a>
+      </div>
+      <div>
+        <form class="d-flex">
+            <input type="text" placeholder="Search..." class="form-control i" id="search" name="search"/>
+            <button class="btn btn-primary ms-2" type="submit">Search</button>
+          </form>
+    </div>
+  </div>
+  <div class="card mb-4">
+      
+      <!-- card-header end// -->
+      
+      <div class="card-body">
+        <article class="itemlist">
+              <div class="row align-items-center">
+                  
+                  
+                  <div class="col-lg-2 col-sm-2 col-4 col-price">Product</div>
+                  <div class="col-lg-2 col-sm-2 col-4 col-price">Name</div>
+                  <div class="col-lg-2 col-sm-2 col-4 col-price">Price</div>
+                  <div class="col-lg-2 col-sm-2 col-4 col-status">
+                      <span>Category</span>
+                  </div>
+                  <div class="col-lg-1 col-sm-2 col-4 col-date">
+                      <span>Stock</span>
+                  </div>
+                  <div class="col-lg-2 col-sm-2 col-4 col-action text-end d-flex">
+                      <span>Actions</span>
+                  </div>
+              </div>
+              <!-- row .// -->
+        </article>
+      <br>
+        
+          <% if (product && product.length > 0) {
+              for (let i = 0; i < product.length; i++) {
+            %>
+          <article class="itemlist">
+              <div class="row align-items-center">
+                  
+                  
+                  <div class="col-lg-2 col-sm-2 col-4 col-price">
+                    <img src="/adminAssets/productImages/<%= product[i].image[0] %>" class="img-sm img-thumbnail" alt="no image" />
+                    </div>
+                  <div class="col-lg-2 col-sm-2 col-4 col-price"><%= product[i].name %></div>
+                  <div class="col-lg-2 col-sm-2 col-4 col-price"><%= product[i].price %></div>
+                  <div class="col-lg-2 col-sm-2 col-4 col-status">
+                      <span><%= product[i].category %></span>
+                  </div>
+                  <div class="col-lg-1 col-sm-2 col-4 col-date">
+                      <span><%= product[i].stock %></span>
+                  </div>
+                  <div class="col-lg-2 col-sm-2 col-4 col-action text-end d-flex">
+                      <% if (product[i].is_delete === 1) { %>
+        <a href="/admin/unlistProduct?id=<%= product[i]._id %>"><button class="btn btn-google">Unlisted</button></a>
+      <% } else { %>
+        <a href="/admin/listProduct?id=<%= product[i]._id %>"><button class="btn btn-twitter">Listed</button></a>
+      <% } %>
+      <a href="/admin/editProduct?id=<%= product[i]._id %>" class="btn btn-dark ms-3">Edit</a>
+      <% if(product[i].isOffer){ %>
+        <a href="/admin/removeOffer?id=<%= product[i]._id %>" class="btn btn-danger ms-3">Remove Offer</a>
+        <% }else{%>
+            <a href="/admin/applyPrOffer?id=<%= product[i]._id %>" class="btn btn-facebook ms-3">Apply Offer</a>
+
+        <% } %>
+
+
+
+
+                  </div>
+              </div>
+              <!-- row .// -->
+          </article>
+
+
+
+          <%
+        }
+  } else {
+  %>
+  <tr>
+    <td colspan="6">Product Not Found</td>
+  </tr>
+  <%
+  } %>
+          <!-- itemlist  .// -->
+          
+         
+          <!-- itemlist  .// -->
+          
+          <!-- itemlist  .// -->
+          
+          <!-- itemlist  .// -->
+          
+          <!-- itemlist  .// -->
+          
+          <!-- itemlist  .// -->
+          
+          <!-- itemlist  .// -->
+         
+          <!-- itemlist  .// -->
+         
+          <!-- itemlist  .// -->
+      </div>
+      <!-- card-body end// -->
+  </div>
+  <!-- card end// -->
+  <!-- <div class="pagination-area mt-30 mb-50">
+      <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-start">
+              <li class="page-item active"><a class="page-link" href="#">01</a></li>
+              <li class="page-item"><a class="page-link" href="#">02</a></li>
+              <li class="page-item"><a class="page-link" href="#">03</a></li>
+              <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+              <li class="page-item"><a class="page-link" href="#">16</a></li>
+              <li class="page-item">
+                  <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+              </li>
+          </ul>
+      </nav>
+  </div> -->
+
+  <div class="text-center pagination">
+    <% const pagesToShow = 3; // Number of page links to show at a time %>
+    <% const startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2)); %>
+    <% const endPage = Math.min(totalPages, startPage + pagesToShow - 1); %>
+
+    <% if (startPage > 1) { %>
+        <a class="pagination-link" href="?page=1">1</a>
+        <% if (startPage > 2) { %>
+            <span class="pagination-dots">...</span>
+        <% } %>
+    <% } %>
+
+    <% for (let i = startPage; i <= endPage; i++) { %>
+        <a class="pagination-link <%= i === currentPage ? 'active' : '' %>" href="?page=<%= i %>"><%= i %></a>
+    <% } %>
+
+    <% if (endPage < totalPages) { %>
+        <% if (endPage < totalPages - 1) { %>
+            <span class="pagination-dots">...</span>
+        <% } %>
+        <a class="pagination-link" href="?page=<%= totalPages %>"><%= totalPages %></a>
+    <% } %>
+ </div>
+</section>
+<%- include("../admin/layouts/adminfooter") %>

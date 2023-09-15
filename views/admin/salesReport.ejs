@@ -1,0 +1,129 @@
+<%- include("../admin/layouts/adminheader") %>
+
+
+ <section class="content-main">
+    <div class="card mb-4">
+      <div class="row ml-15">
+        <div class="col-lg-6">
+          <h3 class="mt-5" style="color: rgb(148, 148, 148);">Sales Report</h3>
+        </div>
+        <div class="col-lg-6 text-lg-end">
+          <button type="button" onclick="generatePDF()" class="btn btn-primary mt-4 me-2">
+            Download
+          </button>
+          
+        </div>
+      </div>
+      <div class="row mt-4 ml-15 mb-3">
+        <form action="/admin/postSalesReport" method="post">
+          <div class="sort-container mb-3">
+            <label for="from-date">From Date:</label>
+            <input type="date" id="from-date" name="fromDate"
+              style="padding: 8px 12px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px;" required>
+            <label for="to-date">To Date:</label>
+            <input type="date" id="to-date" name="toDate"
+              style="padding: 8px 12px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px;" required>
+            <button class="btn btn-primary mt-4 me-2 mb-4" type="submit" id="get-report-btn"
+              style="color: white; border: none; padding: 8px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; cursor: pointer; border-radius: 4px;">Get
+              Report</button>
+          </div>
+        </form>
+        <%if(message){ %>
+        <p style="color: red;"><%= message %></p>
+        <% } %>
+      <div id="dateError" class="text-danger ml-15 mb-3" style="display: none;">End date should be after start date.</div>
+      <!-- card-header end// -->
+      <div class="card-body">
+        <div class="table-responsive">
+          <div id="printThisDiv">
+            <table class="table table-hover" id="tableReport">
+              <thead id="tablehead">
+                <tr>
+                  
+                  <th scope="col">Id</th>
+                  <th scope="col">Product</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Qnty</th>
+                  <th scope="col">Payment Method</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Expected Delivery</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <% if(orders){ %>
+                <tbody>
+                  <% const options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
+  
+                  
+                    <% orders.forEach(order=>{
+                      order.products.forEach(product=>{%>
+                      <tr>
+                       
+                        <td><b>
+                            <%=order.OID %>
+                          </b></td>
+                        <td><b>
+                            <%=product.productId.name %>
+                          </b></td>
+                        <td>₹ <%=product.productId.price %>
+                        </td>
+                        <td>
+                          <%=product.quantity %>
+                        </td>
+                        <td>
+                          <%=order.payment.toUpperCase() %>
+                        </td>
+                        <td>₹ <%=product.productId.price*product.quantity %>
+                        </td>
+                        <td>
+                          <%=order.expectedDelivery.toLocaleDateString('en-US', options)%>
+                        </td>
+                        <td>
+                          <%=product.status %>
+                        </td>
+                      </tr>
+                      
+                        <%})%>
+                          <% }) %>
+                </tbody>
+                <% } %>
+            </table>
+            <div class="product__pagination center-x">
+  <% if (page > 1) { %>
+    <a href="?page=<%= page - 1 %>"><i class="fa fa-arrow-left" style="font-size:24px"></i>Prv</a>
+  <% } %>
+  
+  <% for (let i = 1; i <= totalPages; i++) { %> <!-- Iterate in ascending order -->
+    <% if (i === 1 || i === page - 1 || i === page || i === page + 1 || i === totalPages) { %>
+      <a href="?page=<%= i %>" class="<%= i === page ? 'pagination__active' : '' %>"><%= i %></a>
+    <% } else if (i === page + 2) { %>
+      <span>...</span>
+    <% } %>
+  <% } %>
+  
+  <% if (page < totalPages) { %>
+    <a href="?page=<%= page + 1 %>"><i class="fa fa-arrow-right" style="font-size:24px"></i>Nxt</a>
+  <% } %>
+</div>
+
+
+
+          </div>
+
+        </div>
+        <!-- table-responsive //end -->
+      </div>
+      <!-- card-body end// -->
+    </div>
+    <!-- card end// -->
+    
+ </section>    
+
+ 
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+   
+   
+
+<%- include("../admin/layouts/adminfooter") %>

@@ -1,0 +1,302 @@
+<%- include("../user/layouts/userheader") %>
+
+<!-- Header Section End -->
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Check Out</h4>
+                    <div class="breadcrumb__links">
+                        <a href="./index.html">Home</a>
+                        <a href="./shop.html">Shop</a>
+                        <span>Check Out</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="row">
+            <!-- Left Column: Address List -->
+            <div class="col-lg-4">
+                <div class="checkout__address">
+                    <h4 class="checkout__title">Choose Address</h4>
+                    <!-- Address List Loop -->
+                    <% if (address && address.addresses && address.addresses.length > 0) { %>
+                        <% for (let i = 0; i < address.addresses.length; i++) { %>
+                            <div class="address__item p-3" style="border: 1px solid rgb(232, 232, 232);">
+                                <!-- Address Radio Button -->
+                                <label class="address__label">
+                                    <input type="radio" name="selectedAddress" value="<%= address.addresses[i].fname %> <%= address.addresses[i].lname %>, <%= address.addresses[i].address %>, <%= address.addresses[i].city %>, <%= address.addresses[i].pin %>, <%= address.addresses[i].phone %>" id="address" required>
+                                    <span class="address__checkmark"></span>
+                                </label>
+                                <!-- Address Details -->
+                                <div class="address__details">
+                                    <p class="address__text">
+                                        <%= address.addresses[i].fname %> <%= address.addresses[i].lname %>, <%= address.addresses[i].address %>, <%= address.addresses[i].city %>, <%= address.addresses[i].pin %>, <%= address.addresses[i].phone %>
+                                    </p>
+                                </div>
+                            </div>
+                            <br>
+                            <% } %>
+                    <% } else { %>
+                        <h4 class="text-center">No Address Available</h4>
+                    <% } %>
+                    <div class="container mt-1 mb-5">
+                        <a href="/cAddAddress?Total=<%= total %>">
+                            <button class="btn btn-black">Add Address</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Order Container -->
+            <div class="col-lg-8">
+                <div class="checkout__form">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="cart__discount">
+                                <h6>Discount codes</h6>
+                                <form action="/applyCoupon?Total=<%= total %>" method="post">
+                                    <input type="text" placeholder="Coupon code" name="coupon" id="coupon">
+                                    <button type="submit">Apply</button>
+                                </form>
+                                <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#exampleModal">
+    Available Coupons
+  </button>
+  <p style="color: red; margin-top: 10px;"><%= message %></p>
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">All Coupons</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% var now = Date.now() %>
+
+        <% if (coupons) { %>
+            <% for (let i = 0; i < coupons.length; i++) { %>
+                <% const coupon = coupons[i]; %>
+                <% const now = Date.now(); %>
+                <% let active; %>
+                
+                <% if (coupon.startDate < now && coupon.expireDate > now) { %>
+                    <% active = "Active"; %>
+                <% } else if (coupon.startDate > now) { %>
+                    <% active = "Upcoming"; %>
+                <% } else if (coupon.expireDate < now) { %>
+                    <% active = "Expired"; %>
+                <% } %>
+                
+                <% if (active === "Active") { %>
+                    <div class="modal-body" style="background-color: rgb(249, 255, 171); border-bottom: 1px solid rgb(184, 184, 184);">
+                        <b><%= coupon.code %></b>
+                        <p style="margin-bottom: 1px;"><%= coupon.discountPercentage %>% OFF</p>
+                        <p>Minimum order value: <%= coupon.minimum %></p>
+                    </div>
+                <% } %>
+            <% } %>
+        <% } %>
+        
+       
+      </div>
+    </div>
+  </div>
+  <!-- Modal ended -->
+  
+                            </div>
+                            <%  var Total = total - (total * (discount / 100)).toFixed() %>
+                            <% var off = total-Total %>
+                            <% var wBalance = 0 %>
+
+                            
+                            
+                            <!-- Order Summary -->
+                            <div class="checkout__order">
+                                <h4 class="order__title">Your order</h4>
+                                <!-- Product details here -->
+                                <% if(discount){ %>
+                                <ul class="checkout__total__all">
+                                    <li>Subtotal <span>₹<%= total %></span></li>
+                                    <li>Discount <span>₹<%= off %></span></li>
+                                    <li>Total <span>₹<%= Total %></span></li>
+                                <input type="hidden" name="total" id="total" value="<%= Total %>">
+
+                                </ul>
+                                <%}else{%>
+
+                                <ul class="checkout__total__all">
+                                    <li>Subtotal <span>₹<%= total %></span></li>
+                                    <li>Discount <span>₹0.00</span></li>
+                                    <li>Total <span>₹<%= total %></span></li>
+                                <input type="hidden" name="total" id="total" value="<%= total %>">
+
+                                </ul>
+                                    <% } %>
+                                    <% if(discount) {%>
+                                        <ul class="checkout__total__all">
+                                    <li>Coupon : <b><%= code %></b> <a href="/removeCoupon?Total=<%= total %>"><span>remove</span></a></li>
+
+                                </ul>
+
+                                
+                                    <% }else{ %>
+                                    <ul class="checkout__total__all">
+
+                                        <% if(cart.isWallet){ %>
+                                            <% wBalance = oldTotal-total %>
+                                            <li>Wallet : <%= user.wallet.toFixed(0)-wBalance %><a href="/removeWallet?Total=<%= oldTotal %>&&t=<%= total %>"><span>remove</span></a></li>
+                                            <% }else{ %>
+                                                <%if(user.wallet==0){ %>
+                                                    <li>Wallet : <%= user.wallet.toFixed(0) %> <span>No money</span></li>
+                                                    
+                                                    <% }else{%>
+                                                        <li>Wallet : <%= user.wallet.toFixed(0) %> <a href="/applyWallet?Total=<%= total %>"><span>apply</span></a></li>
+                                                        <% } %>
+                                                        
+                                                        <% } %>
+                                                        <li><p style="font-size: 13px;">Note : Only 60% of order amount can be used through wallet</p></li>
+                                                        
+                                                        
+                                                        
+                                                    </ul>
+                                                    <% } %>
+                                                    <input type="hidden" value="<%= wBalance %>" id="wBalance" name="wBalance">
+                                <div class="checkout__payment">
+                                    <!-- Payment Method Options -->
+                                    <label for="paypal" class="payment__label">
+                                        <input type="radio" id="payment" name="payment" value="cod" required>
+                                        <label for="paymentMethod1">Cash on delivery</label>
+                                    </label>
+                                    <label for="payment" class="payment__label" style="margin-left: 20px;">
+                                        <input type="radio" id="payment" name="payment" value="razor" required>
+                                        <label for="paymentMethod1">RazorPay</label>
+                                    </label>
+                                </div>
+                                
+                                <button type="submit" class="site-btn" onclick="placeOrder()">PLACE ORDER</button>
+                            </div>
+                            <p class="mt-2">Note: Can't apply wallet and coupon together</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+    <!-- Checkout Section End -->
+    
+    <!-- Your JavaScript Scripts -->
+    
+    <script>      
+        
+        function placeOrder(){
+            
+            const address = document.querySelector('input[name = "selectedAddress"]:checked').value
+            const payment = document.querySelector('input[name = "payment"]:checked').value            
+            const total = document.getElementById('total').value           
+            const wBalance = document.getElementById('wBalance').value
+            
+            $.ajax({
+                url: '/checkout',
+                method: 'post',
+                data: {
+                    selectedAddress: address,
+                    payment: payment,
+                    total: total,
+                    wBalance:wBalance,
+                },
+                success: (response)=>{
+                    if(response.success){
+                        const param = response.params
+                        const url = '/order-placed/' + param
+                        window.location.href = url
+                    }else{
+                        razorpayPayment(response.order)
+                        // console.log(order)
+                        // alert(response.order)
+                    }
+                }
+            })
+        }
+    
+    
+        function razorpayPayment(order){
+            var options = {
+                "key": "rzp_test_CStesQS1eg5geZ",
+                "amount": order.amount,
+                "currency": "INR",
+                "name": "VERSEN_STORE",
+                "description": "Test Transaction",
+                "image": "https://example.com/your_logo",
+                "order_id": order.id,
+                "handler": function(response) {
+                    verifypayment(response, order)
+                },
+                "prefill": {
+                    "name": "Gaurav Kumar",
+                    "email": "gaurav.kumar@example.com",
+                    "contact": "9000090000"
+                },
+                "notes": {
+                        "address": "Razorpay Corporate Office"
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    }
+            };
+            var rzp1 =  new Razorpay(options);
+            rzp1.open();
+        }
+    
+        function verifypayment(payment, order){
+            console.log(payment,order)
+            $.ajax({
+                url:"/verifypayment",
+                method: "post",
+                data: {
+                    payment,
+                    order
+                },
+                success: (response)=>{
+                    if (response.success==true){
+                        const param = response.params
+                        const url = '/order-placed/' + param
+                        window.location.href = url;
+                    }else{
+                        swal.fire({
+                            icon: "error",
+                            title: "payment has failed",
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                }
+            })
+            
+        }
+        
+    
+    
+    
+    </script>
+    
+    <!-- Razorpay Integration Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!-- Razorpay Integration Script End -->
+    <%- include("../user/layouts/userfooter") %>

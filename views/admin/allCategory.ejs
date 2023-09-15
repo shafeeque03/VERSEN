@@ -1,0 +1,90 @@
+<%- include("../admin/layouts/adminheader") %>
+
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Categories</h2>
+        </div>
+        <div>
+            <input type="text" placeholder="Search Categories" class="form-control bg-white" />
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <form method="post" action="/admin/addCategory">
+                        <div class="form-group d-flex">
+                         <input type="text" class="form-control" id="category_name" name="category_name" placeholder="add new category" required>
+                           <a href="/admin/addCategory"><button class="btn btn-primary mb-3 ms-2">Enter</button></a>
+                        </div>
+                    </form>
+                   
+                           
+                        </div>
+                    
+                </div>
+                <div class="col-md-9">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr style="text-align: center;">
+                                   
+                                    
+                                    <th>Name</th>
+                                    <th>Actions</th>
+                                    <th>Edit</th>
+                                    <th>Offer</th>
+                                </tr>
+                            </thead>
+                            <tbody style="text-align: center;">
+                                <% if (categories.length) {for (let i = 0; i < categories.length; i++) { %>
+                                <tr>
+                                   
+                                    <td><%= categories[i].name %></td>
+                                    
+                                    <td>
+                                        <% if(categories[i].is_delete === 1){ %>
+                                        <a href="/admin/unlistCategory?id=<%= categories[i]._id %>"><button class="btn btn-google">Unlisted</button></a>
+                                        <% } else { %>
+                                        <a href="/admin/listCategory?id=<%= categories[i]._id %>"><button class="btn btn-primary">Listed</button></a>
+                                        <% } %>
+                                    </td>
+                                    
+                                    
+                                    <td><a href="/admin/editCategory?id=<%= categories[i]._id %>"><button class="btn btn-dark">Edit</button></a></td>
+                                    <% if(categories[i].isOffer){ %>
+                                        <td><a href="/admin/removeCatOff?name=<%= categories[i].name %>"><button class="btn btn-google">Remove Offer</button></a></td>
+                                        <% }else{ %>
+                                            <td><a href="/admin/applyCatOff?name=<%= categories[i].name %>"><button class="btn btn-primary">Apply Offer</button></a></td>
+
+                                        <% } %>
+                                </tr>
+                                <% } } else { %>
+                                    <tr>
+                                        <td colspan="2" class="text-center">No Categories Found</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                        <div>
+                            <% if(typeof message !=='undefined' ) { %>
+                              <p class="text-danger">
+                                <%= message %>
+                              </p>
+                            <% } %>
+                          </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- .col// -->
+            </div>
+            <!-- .row // -->
+        </div>
+        <!-- card body .// -->
+    </div>
+    <!-- card .// -->
+</section>
+<!-- content-main end// -->
+
+    <%- include("../admin/layouts/adminfooter") %>

@@ -1,0 +1,121 @@
+<%- include("../user/layouts/userheader") %>
+
+
+<section class="shopping-cart spad">
+    <div class="container" id="reloadDiv">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table class="table">
+                         <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (cart && cart.products) { %>
+                                <% cart.products.forEach((cartItem) => { %>
+                                    <tr>
+                                        <td class="product__cart__item">
+                                            <a href="#">
+                                                <div class="product__cart__item__pic">
+                                                    <img src="adminAssets/productImages/<%= cartItem.productId.image[0] %>" alt="no-image" style="width: 70px;">
+                                                </div>
+                                                <div class="product__cart__item__text">
+                                                    <h6><%= cartItem.productId.name %></h6>
+                                                    <h5>₹<%= cartItem.productId.price %></h5>
+                                                </div>
+                                            </a>
+                                        </td>
+                                        <td class="quantity__item" >
+                                            <form action="#">
+                                                <div class="quantity">
+
+                                                    
+                                                    <div class="pro-qty-2 d-flex">
+                                                        <button class="qty-btn" type="button" onclick="increaseQuantity('<%= cartItem._id %>' , '<%= cartItem.productId._id %>', -1 )"><h2><b>-</b></h2></button>
+                                                                <input type="text"  value="<%= cartItem.quantity %>" name="quantity" readonly>
+                                                                <input type="hidden" name="totalPrice" value="<%= cartItem.totalPrice %>">
+                                                                <button type="button" class="qty-btn" onclick="increaseQuantity('<%= cartItem._id %>' , '<%= cartItem.productId._id %>', 1 )"><h2><b>+</b></h2></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        
+                                        <td class="cart__price">₹<%= cartItem.totalPrice %></td>
+                                        <td class="cart__close"><a href="/deleteCart?id=<%= cartItem._id %>"><i class="fa fa-close"></i></a></td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="4" class="text-center">No products in cart</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a href="/shop">Continue Shopping</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+               
+
+               
+                <div class="cart__total">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>Total <span>₹ <%= total %></span></li>
+                    </ul>
+                    <a href="/checkout?Total=<%= total %>" class="primary-btn">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+function increaseQuantity(cartId , productId ,count) {
+        $.ajax({
+            url : '/changes',
+            method : 'post',
+            data : {
+                cartId : cartId,
+                productId ,
+                count:count
+            },
+            success : (response) => {
+                if(response.success) {
+                    $('#reloadDiv').load('/cart #reloadDiv')
+                }else{
+                    Swal.fire({
+                    title : "Error",
+                    icon : 'error',
+                    text : response.message,
+                    timer : 2000
+                })
+                }
+            },
+            error : (error) => {
+                
+                Swal.fire({
+                    title : "Error",
+                    icon : 'error',
+                    text : response.message,
+                    timer : 1500
+                })
+            }
+        })
+    }
+
+</script>
+
+<%- include("../user/layouts/userfooter") %>

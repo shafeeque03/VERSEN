@@ -1,0 +1,289 @@
+<%- include("../user/layouts/userheader.ejs") %>
+
+<style>
+        
+    /* Desktop styles */
+    .order-section, .product-section {
+        margin: 20px;
+        padding: 30px;
+        border: 1px solid #beb0b0;
+        background-color: #fff;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Tablet styles */
+    @media (max-width: 768px) {
+        .order-section, .product-section {
+            padding: 20px;
+        }
+    }
+    
+    /* Mobile styles */
+    @media (max-width: 480px) {
+        .order-section, .product-section {
+            margin: 10px;
+            padding: 15px;
+        }
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+    
+
+    
+    .order-section h2, .product-section h2 {
+        margin-top: 0;
+        color: #000000;
+    }
+    
+    .edit-button, .delete-button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        color: #fff;
+    }
+    
+    .edit-button {
+        background-color: #000000;
+    }
+    
+    .delete-button {
+        background-color: #000000;
+    }
+    
+    .edit-button:hover, .delete-button:hover {
+        background-color: #000000;
+    }
+</style>
+
+    
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>View Details</h4>
+                    <div class="breadcrumb__links">
+                        <a href="/">Home</a>
+                        <a href="/">Profile</a>
+                        <span>View Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div style="padding: 20px 200px;" >
+    <section class="order-section" >
+        <h2>Order Information</h2>
+        <table>
+            <tr>
+                <th>Date:</th>
+                <td><%= order.date.toLocaleDateString('en-US', { year: 'numeric' , month: 'short' ,
+                    day: '2-digit' }).replace(/\//g,'-') %></td>
+            </tr>
+            <tr>
+                <th>Order ID:</th>
+                <td> VRSN<%= order.OID %></td>
+            </tr>
+            <tr>
+                <th>Address:</th>
+                <td> <%= order.address %></td>
+            </tr>
+            <tr>
+                <th>Grand Total:</th>
+                <td> ₹<%= order.totalAmount %> (after wallet/coupon off)</td>
+            </tr>
+            <tr>
+                <th>Payment Method:</th>
+                <td><%= order.payment.toUpperCase() %></td>
+            </tr>
+            <tr>
+                <th>Delivery Date:</th>
+                
+                <td style="font-weight: bold;"><%= order.expectedDelivery.toLocaleDateString('en-US', { year: 'numeric' ,
+                    month: 'short' , day: '2-digit' }).replace(/\//g,'-') %></td>
+            </tr>
+            <% if(order.paymentId){ %>
+                <tr>
+                    <th>Payment ID</th>
+                    <td><%= order.paymentId %></td>
+                </tr>
+                <% } %>
+        </table>
+    </section>
+    </div>
+
+
+<div id="reloadDiv">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 mt-3">
+            <% if (order && order.products) { %>
+            <div class="shopping__cart__table">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% order.products.forEach((cart) => { %>
+                            <tr class="cart-item">
+                                <td class="product__cart__item">
+                                    <div class="product__cart__item__pic">
+                                        <img src="/adminassets/productImages/<%= cart.productId.image[0] %>"
+                                            alt="" style="height: 100px; width: 100px;">
+                                    </div>
+                                    <div class="product__cart__item__text">
+                                        <h6><%= cart.productId.name %></h6>
+                                        <h5>₹<%= cart.productId.price %></h5>
+                                    </div>
+                                    <input type="hidden" name="param" value="<%= cart._id %>">
+
+                                </td>
+                                <td class="quantity__item">
+                                    <div class="quantity">
+                                        <div class="pro-qty-2">
+                                            <input type="text" value="<%= cart.quantity %>" readonly>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="cart__price">₹ <%= cart.totalPrice %></td>
+                                <td>
+                                    <h5><%= cart.status %></h5>
+                                </td>
+                                <td>
+                                    <% if (cart.status === 'delivered') { %>
+                                        <% const deliveryDate = new Date(order.expectedDelivery); %>
+                                        <% const currentDate = new Date(); %>
+                                        <% const timeDifference = currentDate - deliveryDate; %>
+                                        <% const returnWindowDuration = 10 * 24 * 60 * 60 * 1000; %>
+                                
+                                        <% if (timeDifference <= returnWindowDuration) { %>
+                                            <a href="/returnOrder?pid=<%= cart._id %>&&id=<%= order._id %>"><button type="button" class="btn btn-primary">Return</button></a>
+                                            <td>Return for 10 days</td>
+                                        <% } else { %>
+                                            <!-- Button is hidden if more than 2 minutes have passed -->
+                                        <% } %>
+                                    <% } else if (cart.status === 'cancelled') { %>
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" disabled>Cancelled</button>
+                                    <% } else if (cart.status === 'returned') { %> 
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" disabled>Returned</button>
+                                    <% } else { %> 
+                                        <button type="button" onclick="cancelOrder('<%= cart._id %>','<%= cart.totalPrice %>')" class="btn btn-danger">Cancel</button>
+
+                                    <% } %>
+                                </td>
+                                
+                                
+                            </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+   
+
+<% if (order && order.products) { %>
+<% order.products.forEach((cart) => { %>
+<!-- Cancel Modal -->
+<div class="modal fade" id="cancelModal<%= cart._id %>" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+           <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Reason for cancellation</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-check">
+                                <input type="radio" id="cancelReason" name="cancelReason" value="Change of Mind"
+                                    required>
+                                <label>Change of Mind</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" id="cancelReason" name="cancelReason"
+                                    value="Shipping or Delivery Concerns" required>
+                                <label>Shipping or Delivery Concerns</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" id="cancelReason" name="cancelReason" value="Payment Issues"
+                                    required>
+                                <label>Payment Issues</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" onclick="cancelOrder('<%= cart._id %>','<%= cart.totalPrice %>')" class="btn btn-danger">Cancel</button>
+
+                        </div>
+        </div>
+    </div>
+</div>
+
+<!-- Return Modal -->
+
+<% }) %>
+<% } %>
+
+<script>
+
+    function cancelOrder(cartId,total){
+        $.ajax({
+            url: '/cancelOrder',
+            method: 'post',
+            data:{
+                crId: cartId,
+                totalpr: total
+            },
+            success: (response) => {
+                if(response.success) {
+                    Swal.fire({
+                        title: 'Cancelled',
+                        icon: 'success',
+                        text: 'Order Cancelled',
+                        timer : 1500
+                    }).then(()=>{
+                        location.reload()
+                    })
+                }else{
+                    Swal.fire({
+                        title: 'Error',
+                        icon: 'error',
+                        text: 'Order Cancellation failed',
+                        timer: 1500
+                    });
+                }
+            }
+        });
+    }
+
+</script>
+
+<%- include("../user/layouts/userfooter.ejs") %>

@@ -1,0 +1,97 @@
+<%- include("../admin/layouts/adminheader") %>
+
+ <section class="content-main">
+    <div class="card mb-4">
+      <div class="row ml-15">
+        <div class="col-lg-6">
+          <h1 class="mt-5">Orders</h1>
+        </div>
+        
+      </div>
+      <!-- card-header end// -->
+      <div class="card-body">
+        <div class="table-responsive" >
+          <div  id="reloadDiv">
+            <table class="table table-hover" id="tableReport" >
+              <thead id="tablehead">
+                <tr>
+                  <th>No</th>
+                  <th scope="col">Id</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Payment Method</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% const options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
+
+                <% let count=1%>
+                  <% orders.forEach(order=>{
+                    order.products.forEach(product=>{%>
+                    <tr>
+                      <td>
+                        <%=count %>
+                      </td>
+                      <td><b>
+                          <%=order.OID %>
+                        </b></td>
+                      <td>₹<%=product.productId.price %>
+                      </td>
+                      <td>
+                        <%=product.quantity %>
+                      </td>
+                      <td>
+                        <%=order.payment.toUpperCase() %>
+                      </td>
+                      <td>₹ <%=product.productId.price*product.quantity %>
+                      </td>
+                      <td>
+                        <%=order.date.toLocaleDateString('en-US', options)%>
+                      </td>
+                      <td >
+                            <% if(product.status==="processing"){ %>
+                                <span class="badge badge-pill badge-soft-success" onclick="changeDeliver('<%= product._id %>','<%= order.user %>')" style="cursor: pointer;">Deliver</span>
+                                
+                                <% } else if(product.status==="delivered") { %>
+                                <span class="badge badge-pill badge-soft-secondary">Delivered</span>
+                                <% } else if(product.status==="cancelled") { %>
+                                <span class="badge badge-pill badge-soft-pink">Cancelled</span>
+                                <% } else if(product.status==="returned") { %>
+                                <span class="badge badge-pill badge-soft-warning">returned</span>
+                                <% } %>
+
+
+
+
+                                
+
+
+                        </td>
+                        <input type="hidden" value="<%= product._id %>" name="id" id="id">
+                    </tr>
+                    <%count++%>
+                      <%})%>
+                        <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <!-- table-responsive //end -->
+      </div>
+      <!-- card-body end// -->
+    </div>
+    <!-- card end// -->
+   
+ </section>    
+
+
+
+
+   
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<%- include("../admin/layouts/adminfooter") %>

@@ -1,0 +1,65 @@
+/* ========================
+INCLUDE STYLES AND COMPONENTS
+===================== */
+
+// 1. Abstracts
+@import
+  'abstracts/import-vendors',
+  'abstracts/mixins',
+  'abstracts/variables';  
+
+// 2. Base stuff
+@import
+  'base/helpers',
+  'base/typography';
+
+// 3. Components
+@import
+  'components/navigation',
+  'components/buttons',
+  'components/forms',
+  'components/elements',
+  'components/items',
+  'components/lists';
+
+// 4. Layout
+@import
+'layout/spacing',
+'layout/layout',
+'layout/layout-dark',
+'layout/responsive';
+
+.product__pagination {
+  padding-top: 25px;
+  text-align: center;
+
+  a {
+      display: inline-block;
+      font-size: 16px;
+      font-weight: 700;
+      color: $heading-color;
+      height: 30px;
+      width: 30px;
+      border: 1px solid transparent;
+      border-radius: 50%;
+      line-height: 30px;
+      text-align: center;
+
+      &.active {
+          border-color: $heading-color;
+      }
+
+      &:hover {
+          border-color: $heading-color;
+      }
+  }
+
+  span {
+      display: inline-block;
+      font-size: 16px;
+      font-weight: 700;
+      color: $heading-color;
+      padding-left: 10px;
+      padding-right: 15px;
+  }
+}
