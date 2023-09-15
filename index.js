@@ -11,7 +11,7 @@ const ejs = require('ejs');
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
 const nocache = require('nocache');
-mongoose.connect('mongodb://127.0.0.1:27017/VERSEN')
+mongoose.connect('mongodb+srv://versen:versen100@cluster0.uyas23q.mongodb.net/VERSEN')
 dotenv.config();
 const axios = require('axios')
 
