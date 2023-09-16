@@ -38,7 +38,9 @@
                                     <a class="nav-link <% if (i === 0) { %>active<% } %>" data-toggle="tab"
                                         href="#tabs-<%= i + 1 %>" role="tab">
                                         <div class="product__thumb__pic">
-                                            <img src="/adminassets/productImages/<%= product.image[i] %>">
+                                            <div class="product__cart__item__pic">                                           
+                                                    <img src="adminAssets/productImages/<%= product.image[i] %>" alt="no-image" style="width: 400px;">                                               
+                                            </div>
                                         </div>
                                         
                                     </a>
