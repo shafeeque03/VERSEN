@@ -180,7 +180,7 @@
                                     <!-- Payment Method Options -->
                                     <label for="paypal" class="payment__label">
                                         <input type="radio" id="payment" name="payment" value="cod" required>
-                                        <label for="paymentMethod1">Cash on delivery</label>
+                                        <label for="paymentMethod1">Cash on Delivery</label>
                                     </label>
                                     <label for="payment" class="payment__label" style="margin-left: 20px;">
                                         <input type="radio" id="payment" name="payment" value="razor" required>
@@ -226,7 +226,7 @@
                         const url = '/order-placed/' + param
                         window.location.href = url
                     }else{
-                        razorpayPayment(response.order)
+                        razorpayPayment(response.order,wBalance)
                         // console.log(order)
                         // alert(response.order)
                     }
@@ -235,7 +235,7 @@
         }
     
     
-        function razorpayPayment(order){
+        function razorpayPayment(order,wBalance){
             var options = {
                 "key": "rzp_test_CStesQS1eg5geZ",
                 "amount": order.amount,
@@ -245,7 +245,7 @@
                 "image": "https://example.com/your_logo",
                 "order_id": order.id,
                 "handler": function(response) {
-                    verifypayment(response, order)
+                    verifypayment(response, order,wBalance)
                 },
                 "prefill": {
                     "name": "Gaurav Kumar",
@@ -263,14 +263,15 @@
             rzp1.open();
         }
     
-        function verifypayment(payment, order){
+        function verifypayment(payment, order, wBalance){
             console.log(payment,order)
             $.ajax({
                 url:"/verifypayment",
                 method: "post",
                 data: {
                     payment,
-                    order
+                    order,
+                    wBalance
                 },
                 success: (response)=>{
                     if (response.success==true){

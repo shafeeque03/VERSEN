@@ -567,7 +567,7 @@ const placeOrder = async(req,res)=>{
         await Cart.findOneAndUpdate({user:req.session.user_id},{$set:{isWallet:false}})
         if(orderdata.status === 'placed'){
             await Cart.deleteOne({user:req.session.user_id})
-            await User.findByIdAndUpdate({_id:req.session.user_id},{$inc:{wallet:-wBalance}})  
+            await User.findByIdAndUpdate({_id:req.session.user_id},{$inc:{wallet:-wBalance}})
 
             for(let i=0; i< cartProducts.length; i++){
                 const productId = cartProducts[i].productId
@@ -601,12 +601,13 @@ const placeOrder = async(req,res)=>{
 const verifypayment = async(req,res)=>{
     try {
 
-        console.log("VerifyPayment is here")
+        // console.log("VerifyPayment is here")
         let userData = await User.findOne({ _id: req.session.user_id})
         const cartData = await Cart.findOne({ user: req.session.user_id})
         const cartProducts = cartData.products
 
         const details = (req.body);
+        const wBalance = req.body.wBalance
 
         const crypto = require('crypto');
 
@@ -626,6 +627,10 @@ const verifypayment = async(req,res)=>{
             }
 
             await Order.findByIdAndUpdate({ _id: details.order.receipt }, { $set: { status: "placed" } })
+            await User.findByIdAndUpdate({_id:req.session.user_id},{$inc:{wallet:-wBalance}})
+            await Cart.findOneAndUpdate({user:req.session.user_id},{$set:{isWallet:false}})
+
+
 
             await Cart.deleteOne({ user: userData._id })
             res.json({ success: true , params : details.order.receipt })

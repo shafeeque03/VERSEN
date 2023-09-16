@@ -590,10 +590,10 @@ const loadSalesReport = async (req, res) => {
 
       const order = await Order.findOne({_id:id}).populate('products.productId')
 
-      console.log(order,"order")
+      // console.log(order,"order")
       const userId = order.user
       const user = await User.findOne({_id:userId})
-      console.log(user,"user")
+      // console.log(user,"user")
 
       res.render('Odetails',{order,user})
       
@@ -607,8 +607,9 @@ const loadSalesReport = async (req, res) => {
         
         const cid = req.query.cid
         const id = req.query.id
-        console.log(id)
+        console.log(id,"ID",cid,"cid")
         const order = await Order.findOne({'products._id':cid})
+        console.log(order,"o")
 
         await Order.findOneAndUpdate({'products._id':cid},
         {$set:{"products.$.status":"delivered"}}
