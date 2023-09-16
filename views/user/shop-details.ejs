@@ -1,4 +1,20 @@
 <%- include("../user/layouts/userheader") %>
+<style>
+
+.image-zoom {
+    overflow: visible;
+    position: relative;
+}
+
+.image-zoom img {
+    transition: transform 0.3s ease;
+}
+
+.image-zoom:hover img {
+    transform: scale(1.25); /* You can adjust the scale factor as desired for the level of zoom */
+}
+
+</style>
     <!-- Header Section End -->
 
     <!-- Shop Details Section Begin -->
@@ -22,8 +38,9 @@
                                     <a class="nav-link <% if (i === 0) { %>active<% } %>" data-toggle="tab"
                                         href="#tabs-<%= i + 1 %>" role="tab">
                                         <div class="product__thumb__pic">
-                                            <img src="/adminassets/productImages/<%= product.image[i] %>" alt="no-image">
+                                            <img src="/adminassets/productImages/<%= product.image[i] %>">
                                         </div>
+                                        
                                     </a>
                                 </li>
                                 <% } %>
@@ -34,8 +51,10 @@
                             <% for(let i=0 ; i < product.image.length ; i++) { %>
                                 <div class="tab-pane <% if (i === 0) { %>active<% } %>" id="tabs-<%= i + 1 %>"
                                     role="tabpanel">
-                                    <div class="product__details__pic__item">
-                                        <img src="/adminassets/productImages/<%= product.image[i] %>" alt="no-image">
+                                    <div class="product__cart__item__pic">
+                                        <div class="image-zoom">
+                                            <img src="adminAssets/productImages/<%= product.image[i] %>" alt="no-image" style="width: 400px;">
+                                        </div>
                                     </div>
                                 </div>
                                 <% } %>
