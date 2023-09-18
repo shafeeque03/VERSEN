@@ -542,6 +542,7 @@ const placeOrder = async(req,res)=>{
             
             return randomNumber;
           }
+          await User.findByIdAndUpdate({_id:req.session.user_id},{$inc:{wallet:-wBalance}})
 
           const oid = generateNum()
 
@@ -567,8 +568,6 @@ const placeOrder = async(req,res)=>{
         await Cart.findOneAndUpdate({user:req.session.user_id},{$set:{isWallet:false}})
         if(orderdata.status === 'placed'){
             await Cart.deleteOne({user:req.session.user_id})
-            await User.findByIdAndUpdate({_id:req.session.user_id},{$inc:{wallet:-wBalance}})
-
             for(let i=0; i< cartProducts.length; i++){
                 const productId = cartProducts[i].productId
                 const count = cartProducts[i].quantity
